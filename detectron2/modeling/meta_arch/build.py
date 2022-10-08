@@ -18,6 +18,9 @@ def build_model(cfg):
     Build the whole model architecture, defined by ``cfg.MODEL.META_ARCHITECTURE``.
     Note that it does not load any weights from ``cfg``.
     """
+    # 构建网络架构
+    # 至于如何把config构造呢？ 通过配置。
+    # 另外，构造函数要好好的利用。
     meta_arch = cfg.MODEL.META_ARCHITECTURE
     model = META_ARCH_REGISTRY.get(meta_arch)(cfg)
     model.to(torch.device(cfg.MODEL.DEVICE))

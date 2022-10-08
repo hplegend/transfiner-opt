@@ -46,6 +46,7 @@ from detectron2.utils.logger import setup_logger
 
 from . import hooks
 from .train_loop import AMPTrainer, SimpleTrainer, TrainerBase
+from detectron2.layers.center_loss import CenterLoss
 
 __all__ = [
     "create_ddp_model",
@@ -372,13 +373,24 @@ class DefaultTrainer(TrainerBase):
         cfg = DefaultTrainer.auto_scale_workers(cfg, comm.get_world_size())
 
         # Assume these objects must be constructed in this order.
+        # 开始构建模型
         model = self.build_model(cfg)
+        # 开始构建optimizer
         optimizer = self.build_optimizer(cfg, model)
         data_loader = self.build_train_loader(cfg)
 
+        # 定义模型
         model = create_ddp_model(model, broadcast_buffers=False)
+
+        # 定义center loss
+        # num class + 1 background
+        # hp add. 这里是一个局部变量，传递给下游使用的。
+        my_center_loss = CenterLoss(num_classes=6, feat_dim=1024, use_gpu=True)
+        my_center_loss_optimizer = torch.optim.SGD(my_center_loss.parameters(), lr=0.001, weight_decay=5e-04, momentum=0.9)
+
+        # new trainer对象
         self._trainer = (AMPTrainer if cfg.SOLVER.AMP.ENABLED else SimpleTrainer)(
-            model, data_loader, optimizer
+            model, data_loader, optimizer, my_center_loss, my_center_loss_optimizer
         )
 
         self.scheduler = self.build_lr_scheduler(cfg, optimizer)

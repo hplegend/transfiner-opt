@@ -5,10 +5,10 @@ MODEL:
   RESNETS:
     OUT_FEATURES: ["res2", "res3", "res4", "res5"]
   FPN:
-    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+    IN_FEATURES: ["res2", "res3", "res4", "res5"] # 这里其实是resenet的C2~C5
   ANCHOR_GENERATOR:
-    # SIZES: [[32], [64], [128], [256], [512]]  # One size for each in feature map
-    SIZES: [[16], [32], [64], [128], [256]]  # One size for each in feature map
+    SIZES: [[32], [64], [128], [256], [512]]  # One size for each in feature map
+    # SIZES: [[16], [32], [64], [128], [256]]  # One size for each in feature map
     ASPECT_RATIOS: [[0.5, 1.0, 2.0]]  # Three aspect ratios (same for all in feature maps)
   RPN:
     IN_FEATURES: ["p2", "p3", "p4", "p5", "p6"]
@@ -35,7 +35,7 @@ MODEL:
     NUM_CLASSES: 5 # 这里是类别
 DATASETS:
   TRAIN: ("coco_multi_pod_2017_train",)
-  TEST: ("coco_multi_pod_2017_test",)
+  TEST: ("coco_multi_pod_2017_val",)
   #TEST: ("coco_2017_test-dev",)
 SOLVER:
   IMS_PER_BATCH: 16 #16

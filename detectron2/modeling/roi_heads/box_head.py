@@ -8,6 +8,7 @@ from torch import nn
 from detectron2.config import configurable
 from detectron2.layers import Conv2d, ShapeSpec, get_norm
 from detectron2.utils.registry import Registry
+import cv2 as cv
 
 __all__ = ["FastRCNNConvFCHead", "build_box_head", "ROI_BOX_HEAD_REGISTRY"]
 
@@ -96,13 +97,20 @@ class FastRCNNConvFCHead(nn.Sequential):
         }
 
     def forward(self, x):
-        # print('x type=' + repr(x))
+        '''
+        x 是 256*256 * 7 *7 （7*7是特征图的大小，可以改版成任意大小，只要cpu能吃得消）
+        '''
+        # print('x value=' + repr(x))
         # print('x type=' + repr(type(x)))
         # 如果是14*14，这里需要加上下面的1行代码
         # x = x[0]
         # print('x type=' + repr(x.shape))
         for layer in self:
             x = layer(x)
+
+        # 这里出去的x直接给到分类和bounding box回归。
+        # 256 * 1024. 正好与FastRCNNOutputLayers forward的输入一样。
+        # print('box_head x type=' + repr(x.shape))
         return x
 
     @property

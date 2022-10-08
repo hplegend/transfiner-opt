@@ -431,6 +431,7 @@ class RPN(nn.Module):
         losses = {k: v * self.loss_weight.get(k, 1.0) for k, v in losses.items()}
         return losses
 
+    # RPN 获取proposals
     def forward(
         self,
         images: ImageList,

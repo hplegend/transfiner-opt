@@ -432,6 +432,7 @@ class ResNet(Backbone):
             assert out_feature in children, "Available children: {}".format(", ".join(children))
         self.freeze(freeze_at)
 
+    # reset： 输出多层次得特征
     def forward(self, x):
         """
         Args:
@@ -456,6 +457,13 @@ class ResNet(Backbone):
             x = self.linear(x)
             if "linear" in self._out_features:
                 outputs["linear"] = x
+
+        # print('outputs ===> ' + repr(outputs))
+        # print('outputs.keys ===> ' + repr(outputs.keys()))
+        # print('outputs.res2.shape ===> ' + repr(outputs['res2'].shape))
+        # print('outputs.res3.shape ===> ' + repr(outputs['res3'].shape))
+        # print('outputs.res4.shape ===> ' + repr(outputs['res4'].shape))
+        # print('outputs.res5.shape ===> ' + repr(outputs['res5'].shape))
         return outputs
 
     def output_shape(self):

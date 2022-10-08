@@ -267,12 +267,18 @@ class FastRCNNOutputLayers(nn.Module):
             scores for K object categories and 1 background class.
 
             Second tensor: bounding box regression deltas for each box. Shape is shape (N,Kx4),
-            or (N,4) for class-agnostic regression.
+            or (N,4) for class-agnostic regression（类不可知回归）.
         """
         if x.dim() > 2:
             x = torch.flatten(x, start_dim=1)
+
+        # print('fast cnn x = ', x.shape)
         scores = self.cls_score(x)
+        # print('fast cnn score.shape = ', scores.shape)
+        # print('fast cnn scores = ', repr(scores))
         proposal_deltas = self.bbox_pred(x)
+        # print('fast cnn proposal_deltas.shape = ', proposal_deltas.shape)
+        # print('fast cnn scores = ', repr(proposal_deltas))
         return scores, proposal_deltas
 
     def losses(self, predictions, proposals):
@@ -309,6 +315,21 @@ class FastRCNNOutputLayers(nn.Module):
         else:
             proposal_boxes = gt_boxes = torch.empty((0, 4), device=proposal_deltas.device)
 
+        # 看到分类loss了吧。
+        '''
+        gt_classes =  tensor([4, 4, 0, 3, 4, 1, 3, 0, 3, 1, 4, 3, 3, 1, 1, 2, 2, 3, 1, 0, 0, 0, 1, 2,
+        4, 2, 2, 3, 0, 3, 2, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 2, 0, 3, 1, 1, 0, 3, 3, 2, 3, 4, 3, 4, 2, 2, 2,
+        1, 3, 2, 3, 4, 3, 1, 4, 4, 3, 2, 2, 2, 3, 3, 0, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], device='cuda:0')
+        '''
+        # print('gt_classes = ', repr(gt_classes))
         losses = {
             "loss_cls": cross_entropy(scores, gt_classes, reduction="mean"),
             "loss_box_reg": self.box_reg_loss(

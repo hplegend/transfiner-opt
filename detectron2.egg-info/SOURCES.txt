@@ -1,25 +1,32 @@
 LICENSE
 README.md
 setup.py
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/cuda_version.cu
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/vision.cpp
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/ROIAlign/ROIAlign_cpu.cpp
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/ROIAlign/ROIAlign_cuda.cu
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/ROIAlignRotated/ROIAlignRotated_cpu.cpp
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/ROIAlignRotated/ROIAlignRotated_cuda.cu
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/box_iou_rotated/box_iou_rotated_cpu.cpp
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/box_iou_rotated/box_iou_rotated_cuda.cu
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/cocoeval/cocoeval.cpp
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/deformable/deform_conv_cuda.cu
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/deformable/deform_conv_cuda_kernel.cu
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/nms_rotated/nms_rotated_cpu.cpp
-/content/drive/My Drive/Colab Notebooks/transfiner-2/transfiner/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/cuda_version.cu
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/vision.cpp
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlign/ROIAlign_cpu.cpp
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlign/ROIAlign_cuda.cu
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlignRotated/ROIAlignRotated_cpu.cpp
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlignRotated/ROIAlignRotated_cuda.cu
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/box_iou_rotated/box_iou_rotated_cpu.cpp
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/box_iou_rotated/box_iou_rotated_cuda.cu
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/cocoeval/cocoeval.cpp
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/deformable/deform_conv_cuda.cu
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/deformable/deform_conv_cuda_kernel.cu
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/nms_rotated/nms_rotated_cpu.cpp
+/content/drive/My Drive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu
+/content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/cuda_version.cu
 /content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/vision.cpp
 /content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlign/ROIAlign_cpu.cpp
+/content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlign/ROIAlign_cuda.cu
 /content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlignRotated/ROIAlignRotated_cpu.cpp
+/content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/ROIAlignRotated/ROIAlignRotated_cuda.cu
 /content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/box_iou_rotated/box_iou_rotated_cpu.cpp
+/content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/box_iou_rotated/box_iou_rotated_cuda.cu
 /content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/cocoeval/cocoeval.cpp
+/content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/deformable/deform_conv_cuda.cu
+/content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/deformable/deform_conv_cuda_kernel.cu
 /content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/nms_rotated/nms_rotated_cpu.cpp
+/content/drive/MyDrive/Colab Notebooks/transfiner-opt/transfiner/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu
 configs/Base-RCNN-C4.yaml
 configs/Base-RCNN-DilatedC5.yaml
 configs/Base-RCNN-FPN.yaml
@@ -63,7 +70,9 @@ configs/transfiner/mask_rcnn_swint_FPN_3x.yaml
 demo/README.md
 demo/demo.py
 demo/demo_swinb.py
+demo/demo_swint.py
 demo/predictor.py
+demo/__pycache__/predictor.cpython-37.pyc
 demo/sample_imgs/000000008844.jpg
 demo/sample_imgs/000000018737.jpg
 demo/sample_imgs/000000126137.jpg
@@ -86,16 +95,22 @@ demo/sample_imgs/000000464144.jpg
 demo/sample_imgs/000000482477.jpg
 demo/sample_imgs/000000495054.jpg
 demo/sample_imgs/000000558073.jpg
+detectron2/_C.cpython-37m-x86_64-linux-gnu.so
 detectron2/__init__.py
 detectron2.egg-info/PKG-INFO
 detectron2.egg-info/SOURCES.txt
 detectron2.egg-info/dependency_links.txt
 detectron2.egg-info/requires.txt
 detectron2.egg-info/top_level.txt
+detectron2/__pycache__/__init__.cpython-37.pyc
 detectron2/checkpoint/__init__.py
 detectron2/checkpoint/c2_model_loading.py
 detectron2/checkpoint/catalog.py
 detectron2/checkpoint/detection_checkpoint.py
+detectron2/checkpoint/__pycache__/__init__.cpython-37.pyc
+detectron2/checkpoint/__pycache__/c2_model_loading.cpython-37.pyc
+detectron2/checkpoint/__pycache__/catalog.cpython-37.pyc
+detectron2/checkpoint/__pycache__/detection_checkpoint.cpython-37.pyc
 detectron2/config/__init__.py
 detectron2/config/compat.py
 detectron2/config/config.py
@@ -103,6 +118,12 @@ detectron2/config/defaults.py
 detectron2/config/defaults.py~
 detectron2/config/instantiate.py
 detectron2/config/lazy.py
+detectron2/config/__pycache__/__init__.cpython-37.pyc
+detectron2/config/__pycache__/compat.cpython-37.pyc
+detectron2/config/__pycache__/config.cpython-37.pyc
+detectron2/config/__pycache__/defaults.cpython-37.pyc
+detectron2/config/__pycache__/instantiate.cpython-37.pyc
+detectron2/config/__pycache__/lazy.cpython-37.pyc
 detectron2/data/__init__.py
 detectron2/data/benchmark.py
 detectron2/data/build.py
@@ -110,6 +131,12 @@ detectron2/data/catalog.py
 detectron2/data/common.py
 detectron2/data/dataset_mapper.py
 detectron2/data/detection_utils.py
+detectron2/data/__pycache__/__init__.cpython-37.pyc
+detectron2/data/__pycache__/build.cpython-37.pyc
+detectron2/data/__pycache__/catalog.cpython-37.pyc
+detectron2/data/__pycache__/common.cpython-37.pyc
+detectron2/data/__pycache__/dataset_mapper.cpython-37.pyc
+detectron2/data/__pycache__/detection_utils.cpython-37.pyc
 detectron2/data/datasets/README.md
 detectron2/data/datasets/__init__.py
 detectron2/data/datasets/builtin.py
@@ -125,19 +152,42 @@ detectron2/data/datasets/pascal_voc.py
 detectron2/data/datasets/process_dataset.py
 detectron2/data/datasets/process_dataset_occ.py
 detectron2/data/datasets/register_coco.py
+detectron2/data/datasets/__pycache__/__init__.cpython-37.pyc
+detectron2/data/datasets/__pycache__/builtin.cpython-37.pyc
+detectron2/data/datasets/__pycache__/builtin_meta.cpython-37.pyc
+detectron2/data/datasets/__pycache__/cityscapes.cpython-37.pyc
+detectron2/data/datasets/__pycache__/cityscapes_panoptic.cpython-37.pyc
+detectron2/data/datasets/__pycache__/coco.cpython-37.pyc
+detectron2/data/datasets/__pycache__/coco_panoptic.cpython-37.pyc
+detectron2/data/datasets/__pycache__/lvis.cpython-37.pyc
+detectron2/data/datasets/__pycache__/lvis_v0_5_categories.cpython-37.pyc
+detectron2/data/datasets/__pycache__/lvis_v1_categories.cpython-37.pyc
+detectron2/data/datasets/__pycache__/pascal_voc.cpython-37.pyc
 detectron2/data/samplers/__init__.py
 detectron2/data/samplers/distributed_sampler.py
 detectron2/data/samplers/grouped_batch_sampler.py
+detectron2/data/samplers/__pycache__/__init__.cpython-37.pyc
+detectron2/data/samplers/__pycache__/distributed_sampler.cpython-37.pyc
+detectron2/data/samplers/__pycache__/grouped_batch_sampler.cpython-37.pyc
 detectron2/data/transforms/__init__.py
 detectron2/data/transforms/augmentation.py
 detectron2/data/transforms/augmentation_impl.py
 detectron2/data/transforms/transform.py
 detectron2/data/transforms/transform_gen.py
+detectron2/data/transforms/__pycache__/__init__.cpython-37.pyc
+detectron2/data/transforms/__pycache__/augmentation.cpython-37.pyc
+detectron2/data/transforms/__pycache__/augmentation_impl.cpython-37.pyc
+detectron2/data/transforms/__pycache__/transform.cpython-37.pyc
 detectron2/engine/__init__.py
 detectron2/engine/defaults.py
 detectron2/engine/hooks.py
 detectron2/engine/launch.py
 detectron2/engine/train_loop.py
+detectron2/engine/__pycache__/__init__.cpython-37.pyc
+detectron2/engine/__pycache__/defaults.cpython-37.pyc
+detectron2/engine/__pycache__/hooks.cpython-37.pyc
+detectron2/engine/__pycache__/launch.cpython-37.pyc
+detectron2/engine/__pycache__/train_loop.cpython-37.pyc
 detectron2/evaluation/__init__.py
 detectron2/evaluation/cityscapes_evaluation.py
 detectron2/evaluation/coco_evaluation.py
@@ -149,6 +199,17 @@ detectron2/evaluation/pascal_voc_evaluation.py
 detectron2/evaluation/rotated_coco_evaluation.py
 detectron2/evaluation/sem_seg_evaluation.py
 detectron2/evaluation/testing.py
+detectron2/evaluation/__pycache__/__init__.cpython-37.pyc
+detectron2/evaluation/__pycache__/cityscapes_evaluation.cpython-37.pyc
+detectron2/evaluation/__pycache__/coco_evaluation.cpython-37.pyc
+detectron2/evaluation/__pycache__/evaluator.cpython-37.pyc
+detectron2/evaluation/__pycache__/fast_eval_api.cpython-37.pyc
+detectron2/evaluation/__pycache__/lvis_evaluation.cpython-37.pyc
+detectron2/evaluation/__pycache__/panoptic_evaluation.cpython-37.pyc
+detectron2/evaluation/__pycache__/pascal_voc_evaluation.cpython-37.pyc
+detectron2/evaluation/__pycache__/rotated_coco_evaluation.cpython-37.pyc
+detectron2/evaluation/__pycache__/sem_seg_evaluation.cpython-37.pyc
+detectron2/evaluation/__pycache__/testing.cpython-37.pyc
 detectron2/export/README.md
 detectron2/export/__init__.py
 detectron2/export/api.py
@@ -167,6 +228,7 @@ detectron2/layers/aspp.py
 detectron2/layers/batch_norm.py
 detectron2/layers/blocks.py
 detectron2/layers/boundary.py
+detectron2/layers/center_loss.py
 detectron2/layers/deform_conv.py
 detectron2/layers/iou_loss.py
 detectron2/layers/mask_ops.py
@@ -178,6 +240,19 @@ detectron2/layers/rotated_boxes.py
 detectron2/layers/scale.py
 detectron2/layers/shape_spec.py
 detectron2/layers/wrappers.py
+detectron2/layers/__pycache__/__init__.cpython-37.pyc
+detectron2/layers/__pycache__/aspp.cpython-37.pyc
+detectron2/layers/__pycache__/batch_norm.cpython-37.pyc
+detectron2/layers/__pycache__/blocks.cpython-37.pyc
+detectron2/layers/__pycache__/boundary.cpython-37.pyc
+detectron2/layers/__pycache__/deform_conv.cpython-37.pyc
+detectron2/layers/__pycache__/mask_ops.cpython-37.pyc
+detectron2/layers/__pycache__/nms.cpython-37.pyc
+detectron2/layers/__pycache__/roi_align.cpython-37.pyc
+detectron2/layers/__pycache__/roi_align_rotated.cpython-37.pyc
+detectron2/layers/__pycache__/rotated_boxes.cpython-37.pyc
+detectron2/layers/__pycache__/shape_spec.cpython-37.pyc
+detectron2/layers/__pycache__/wrappers.cpython-37.pyc
 detectron2/layers/csrc/README.md
 detectron2/layers/csrc/cuda_version.cu
 detectron2/layers/csrc/vision.cpp
@@ -211,15 +286,29 @@ detectron2/modeling/poolers.py
 detectron2/modeling/postprocessing.py
 detectron2/modeling/sampling.py
 detectron2/modeling/test_time_augmentation.py
+detectron2/modeling/__pycache__/__init__.cpython-37.pyc
+detectron2/modeling/__pycache__/anchor_generator.cpython-37.pyc
+detectron2/modeling/__pycache__/box_regression.cpython-37.pyc
+detectron2/modeling/__pycache__/matcher.cpython-37.pyc
+detectron2/modeling/__pycache__/mmdet_wrapper.cpython-37.pyc
+detectron2/modeling/__pycache__/poolers.cpython-37.pyc
+detectron2/modeling/__pycache__/postprocessing.cpython-37.pyc
+detectron2/modeling/__pycache__/sampling.cpython-37.pyc
+detectron2/modeling/__pycache__/test_time_augmentation.cpython-37.pyc
 detectron2/modeling/backbone/__init__.py
 detectron2/modeling/backbone/backbone.py
 detectron2/modeling/backbone/build.py
 detectron2/modeling/backbone/fpn.py
-detectron2/modeling/backbone/fpn.py~
 detectron2/modeling/backbone/pafpn.py
 detectron2/modeling/backbone/pafpn.py~
 detectron2/modeling/backbone/regnet.py
 detectron2/modeling/backbone/resnet.py
+detectron2/modeling/backbone/__pycache__/__init__.cpython-37.pyc
+detectron2/modeling/backbone/__pycache__/backbone.cpython-37.pyc
+detectron2/modeling/backbone/__pycache__/build.cpython-37.pyc
+detectron2/modeling/backbone/__pycache__/fpn.cpython-37.pyc
+detectron2/modeling/backbone/__pycache__/regnet.cpython-37.pyc
+detectron2/modeling/backbone/__pycache__/resnet.cpython-37.pyc
 detectron2/modeling/meta_arch/__init__.py
 detectron2/modeling/meta_arch/build.py
 detectron2/modeling/meta_arch/fcos.py
@@ -231,6 +320,12 @@ detectron2/modeling/meta_arch/panoptic_fpn.py
 detectron2/modeling/meta_arch/rcnn.py
 detectron2/modeling/meta_arch/retinanet.py
 detectron2/modeling/meta_arch/semantic_seg.py
+detectron2/modeling/meta_arch/__pycache__/__init__.cpython-37.pyc
+detectron2/modeling/meta_arch/__pycache__/build.cpython-37.pyc
+detectron2/modeling/meta_arch/__pycache__/panoptic_fpn.cpython-37.pyc
+detectron2/modeling/meta_arch/__pycache__/rcnn.cpython-37.pyc
+detectron2/modeling/meta_arch/__pycache__/retinanet.cpython-37.pyc
+detectron2/modeling/meta_arch/__pycache__/semantic_seg.cpython-37.pyc
 detectron2/modeling/proposal_generator/__init__.py
 detectron2/modeling/proposal_generator/build.py
 detectron2/modeling/proposal_generator/proposal_utils.py
@@ -238,6 +333,11 @@ detectron2/modeling/proposal_generator/rpn.py
 detectron2/modeling/proposal_generator/rpn_outputs.py
 detectron2/modeling/proposal_generator/rrpn.py
 detectron2/modeling/proposal_generator/rrpn_outputs.py
+detectron2/modeling/proposal_generator/__pycache__/__init__.cpython-37.pyc
+detectron2/modeling/proposal_generator/__pycache__/build.cpython-37.pyc
+detectron2/modeling/proposal_generator/__pycache__/proposal_utils.cpython-37.pyc
+detectron2/modeling/proposal_generator/__pycache__/rpn.cpython-37.pyc
+detectron2/modeling/proposal_generator/__pycache__/rrpn.cpython-37.pyc
 detectron2/modeling/roi_heads/__init__.py
 detectron2/modeling/roi_heads/box_head.py
 detectron2/modeling/roi_heads/cascade_rcnn.py
@@ -246,11 +346,22 @@ detectron2/modeling/roi_heads/keypoint_head.py
 detectron2/modeling/roi_heads/mask_head.py
 detectron2/modeling/roi_heads/roi_heads.py
 detectron2/modeling/roi_heads/rotated_fast_rcnn.py
+detectron2/modeling/roi_heads/__pycache__/__init__.cpython-37.pyc
+detectron2/modeling/roi_heads/__pycache__/box_head.cpython-37.pyc
+detectron2/modeling/roi_heads/__pycache__/cascade_rcnn.cpython-37.pyc
+detectron2/modeling/roi_heads/__pycache__/fast_rcnn.cpython-37.pyc
+detectron2/modeling/roi_heads/__pycache__/keypoint_head.cpython-37.pyc
+detectron2/modeling/roi_heads/__pycache__/mask_head.cpython-37.pyc
+detectron2/modeling/roi_heads/__pycache__/roi_heads.cpython-37.pyc
+detectron2/modeling/roi_heads/__pycache__/rotated_fast_rcnn.cpython-37.pyc
 detectron2/projects/README.md
 detectron2/projects/__init__.py
 detectron2/solver/__init__.py
 detectron2/solver/build.py
 detectron2/solver/lr_scheduler.py
+detectron2/solver/__pycache__/__init__.cpython-37.pyc
+detectron2/solver/__pycache__/build.cpython-37.pyc
+detectron2/solver/__pycache__/lr_scheduler.cpython-37.pyc
 detectron2/structures/__init__.py
 detectron2/structures/boxes.py
 detectron2/structures/image_list.py
@@ -258,6 +369,13 @@ detectron2/structures/instances.py
 detectron2/structures/keypoints.py
 detectron2/structures/masks.py
 detectron2/structures/rotated_boxes.py
+detectron2/structures/__pycache__/__init__.cpython-37.pyc
+detectron2/structures/__pycache__/boxes.cpython-37.pyc
+detectron2/structures/__pycache__/image_list.cpython-37.pyc
+detectron2/structures/__pycache__/instances.cpython-37.pyc
+detectron2/structures/__pycache__/keypoints.cpython-37.pyc
+detectron2/structures/__pycache__/masks.cpython-37.pyc
+detectron2/structures/__pycache__/rotated_boxes.cpython-37.pyc
 detectron2/utils/README.md
 detectron2/utils/__init__.py
 detectron2/utils/analysis.py
@@ -277,6 +395,19 @@ detectron2/utils/visualizer-单个器官保存mask.py
 detectron2/utils/visualizer.py
 detectron2/utils/visualizer_old.py
 detectron2/utils/visualizer_看整株分割备份.py
+detectron2/utils/__pycache__/__init__.cpython-37.pyc
+detectron2/utils/__pycache__/collect_env.cpython-37.pyc
+detectron2/utils/__pycache__/colormap.cpython-37.pyc
+detectron2/utils/__pycache__/comm.cpython-37.pyc
+detectron2/utils/__pycache__/env.cpython-37.pyc
+detectron2/utils/__pycache__/events.cpython-37.pyc
+detectron2/utils/__pycache__/file_io.cpython-37.pyc
+detectron2/utils/__pycache__/logger.cpython-37.pyc
+detectron2/utils/__pycache__/memory.cpython-37.pyc
+detectron2/utils/__pycache__/registry.cpython-37.pyc
+detectron2/utils/__pycache__/serialize.cpython-37.pyc
+detectron2/utils/__pycache__/video_visualizer.cpython-37.pyc
+detectron2/utils/__pycache__/visualizer.cpython-37.pyc
 dev/README.md
 dev/linter.sh
 dev/parse_results.sh
@@ -648,6 +779,7 @@ projects/TridentNet/tridentnet/trident_conv.py
 projects/TridentNet/tridentnet/trident_rcnn.py
 projects/TridentNet/tridentnet/trident_rpn.py
 pytorch_toolbelt/__init__.py
+pytorch_toolbelt/__pycache__/__init__.cpython-37.pyc
 pytorch_toolbelt/__pycache__/__init__.cpython-38.pyc
 pytorch_toolbelt/inference/__init__.py
 pytorch_toolbelt/inference/functional.py
@@ -667,29 +799,38 @@ pytorch_toolbelt/losses/other_losses.py~
 pytorch_toolbelt/losses/wing_loss.py
 pytorch_toolbelt/losses/__pycache__/__init__.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/__init__.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/__init__.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/__init__.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/dice.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/dice.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/dice.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/dice.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/focal.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/focal.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/focal.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/focal.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/functional.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/functional.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/functional.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/functional.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/jaccard.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/jaccard.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/jaccard.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/jaccard.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/joint_loss.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/joint_loss.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/joint_loss.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/joint_loss.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/lovasz.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/lovasz.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/lovasz.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/lovasz.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/other_losses.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/other_losses.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/other_losses.cpython-38.pyc
 pytorch_toolbelt/losses/__pycache__/wing_loss.cpython-35.pyc
 pytorch_toolbelt/losses/__pycache__/wing_loss.cpython-36.pyc
+pytorch_toolbelt/losses/__pycache__/wing_loss.cpython-37.pyc
 pytorch_toolbelt/losses/__pycache__/wing_loss.cpython-38.pyc
 pytorch_toolbelt/modules/__init__.py
 pytorch_toolbelt/modules/__init__.py~
@@ -738,9 +879,11 @@ pytorch_toolbelt/utils/torch_utils.py
 pytorch_toolbelt/utils/visualization.py
 pytorch_toolbelt/utils/__pycache__/__init__.cpython-35.pyc
 pytorch_toolbelt/utils/__pycache__/__init__.cpython-36.pyc
+pytorch_toolbelt/utils/__pycache__/__init__.cpython-37.pyc
 pytorch_toolbelt/utils/__pycache__/__init__.cpython-38.pyc
 pytorch_toolbelt/utils/__pycache__/torch_utils.cpython-35.pyc
 pytorch_toolbelt/utils/__pycache__/torch_utils.cpython-36.pyc
+pytorch_toolbelt/utils/__pycache__/torch_utils.cpython-37.pyc
 pytorch_toolbelt/utils/__pycache__/torch_utils.cpython-38.pyc
 pytorch_toolbelt/utils/catalyst/__init__.py
 pytorch_toolbelt/utils/catalyst/criterions.py
@@ -770,9 +913,15 @@ scripts/visual_swinb.sh
 swinb/__init__.py
 swinb/config.py
 swinb/swin_transformer.py
+swinb/__pycache__/__init__.cpython-37.pyc
+swinb/__pycache__/config.cpython-37.pyc
+swinb/__pycache__/swin_transformer.cpython-37.pyc
 swint/__init__.py
 swint/config.py
 swint/swin_transformer.py
+swint/__pycache__/__init__.cpython-37.pyc
+swint/__pycache__/config.cpython-37.pyc
+swint/__pycache__/swin_transformer.cpython-37.pyc
 tests/README.md
 tests/__init__.py
 tests/test_checkpoint.py

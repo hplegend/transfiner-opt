@@ -126,6 +126,8 @@ class FPN(Backbone):
                 paper convention: "p<stage>", where stage has stride = 2 ** stage e.g.,
                 ["p2", "p3", ..., "p6"].
         """
+
+        # resnet特征提供
         bottom_up_features = self.bottom_up(x)
         # print('bottom_up_features:', bottom_up_features.keys())
         results = []
@@ -141,8 +143,10 @@ class FPN(Backbone):
             if idx > 0:
                 features = self.in_features[-idx - 1]
                 features = bottom_up_features[features]
+                # 上采样
                 top_down_features = F.interpolate(prev_features, scale_factor=2.0, mode="nearest")
                 lateral_features = lateral_conv(features)
+                # 特征融合。lateral_features 就是原始得resnet卷积1*1得到
                 prev_features = lateral_features + top_down_features
                 if self._fuse_type == "avg":
                     prev_features /= 2

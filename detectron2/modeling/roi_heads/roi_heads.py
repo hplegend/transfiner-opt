@@ -21,6 +21,7 @@ from .box_head import build_box_head
 from .fast_rcnn import FastRCNNOutputLayers
 from .keypoint_head import build_keypoint_head
 from .mask_head import build_mask_head
+from detectron2.layers import center_loss
 
 ROI_HEADS_REGISTRY = Registry("ROI_HEADS")
 ROI_HEADS_REGISTRY.__doc__ = """
@@ -727,6 +728,7 @@ class StandardROIHeads(ROIHeads):
         features: Dict[str, torch.Tensor],
         proposals: List[Instances],
         targets: Optional[List[Instances]] = None,
+        my_center_loss_fun=None
     ) -> Tuple[List[Instances], Dict[str, torch.Tensor]]:
         """
         See :class:`ROIHeads.forward`.
@@ -738,7 +740,7 @@ class StandardROIHeads(ROIHeads):
         del targets
 
         if self.training:
-            losses = self._forward_box(features, proposals)
+            losses = self._forward_box(features, proposals, my_center_loss_fun)
             # Usually the original proposals used by the box head are used by the mask, keypoint
             # heads. But when `self.train_on_pred_boxes is True`, proposals will contain boxes
             # predicted by the box head.
@@ -779,7 +781,7 @@ class StandardROIHeads(ROIHeads):
         instances = self._forward_keypoint(features, instances)
         return instances
 
-    def _forward_box(self, features: Dict[str, torch.Tensor], proposals: List[Instances]):
+    def _forward_box(self, features: Dict[str, torch.Tensor], proposals: List[Instances], my_center_loss_fun=None):
         """
         Forward logic of the box prediction branch. If `self.train_on_pred_boxes is True`,
             the function puts predicted boxes in the `proposal_boxes` field of `proposals` argument.
@@ -790,7 +792,7 @@ class StandardROIHeads(ROIHeads):
             proposals (list[Instances]): the per-image object proposals with
                 their matching ground truth.
                 Each has fields "proposal_boxes", and "objectness_logits",
-                "gt_classes", "gt_boxes".
+                "gt_classes", "gt_boxes". 这里的proposal有真实值的含义。
 
         Returns:
             In training, a dict of losses.
@@ -799,12 +801,36 @@ class StandardROIHeads(ROIHeads):
         # print('self.box_in_features:', self.box_in_features)
         features = [features[f] for f in self.box_in_features]
         box_features = self.box_pooler(features, [x.proposal_boxes for x in proposals])
+
+        # bounding box feature
+        # 目前看是选择了256个bounding box
         box_features = self.box_head(box_features)
+        # predications 是score和bounding box的组合
         predictions = self.box_predictor(box_features)
-        del box_features
+
+        # move to next
+        # del box_features
 
         if self.training:
+            # 这里就是计算分类的loss的地方
             losses = self.box_predictor.losses(predictions, proposals)
+            # 在这里计算一个center loss吧
+            # feature dim= 1024， feature=[256,1024]
+            # label 等于 proposal的gt classes
+            if my_center_loss_fun is not None:
+                gt_classes_list = [p.gt_classes for p in proposals]
+                if len(gt_classes_list) == 1:
+                    my_gt_classes = (
+                        gt_classes_list[0] if len(proposals) else torch.empty(0)
+                    )
+                else:
+                    my_gt_classes = torch.cat(gt_classes_list, 0)
+                center_loss_ret = my_center_loss_fun(box_features, my_gt_classes)
+                # add center loss
+                losses.update({'loss_center': center_loss_ret})
+                print('center_loss_ret = ', repr(center_loss_ret))
+            del box_features
+
             # proposals is modified in-place below, so losses must be computed first.
             if self.train_on_pred_boxes:
                 with torch.no_grad():
@@ -813,10 +839,21 @@ class StandardROIHeads(ROIHeads):
                     )
                     for proposals_per_image, pred_boxes_per_image in zip(proposals, pred_boxes):
                         proposals_per_image.proposal_boxes = Boxes(pred_boxes_per_image)
+            # {'loss_cls': tensor(1.7064, device='cuda:0', grad_fn=<MulBackward0>), 'loss_box_reg': tensor(0.0301, device='cuda:0', grad_fn=<MulBackward0>)}
+            # print('rio_heads losses', repr(losses))
             return losses
         else:
             pred_instances, _ = self.box_predictor.inference(predictions, proposals)
             return pred_instances
+
+    def cat(tensors: List[torch.Tensor], dim: int = 0):
+        """
+        Efficient version of torch.cat that avoids a copy if there is only a single element in a list
+        """
+        assert isinstance(tensors, (list, tuple))
+        if len(tensors) == 1:
+            return tensors[0]
+        return torch.cat(tensors, dim)
 
     def _forward_mask(self, features: Dict[str, torch.Tensor], instances: List[Instances]):
         """

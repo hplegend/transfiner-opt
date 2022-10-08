@@ -232,7 +232,7 @@ class SimpleTrainer(TrainerBase):
     or write your own training loop.
     """
 
-    def __init__(self, model, data_loader, optimizer):
+    def __init__(self, model, data_loader, optimizer, my_center_loss=None, my_center_loss_optimizer = None):
         """
         Args:
             model: a torch Module. Takes a data from data_loader and returns a
@@ -254,6 +254,8 @@ class SimpleTrainer(TrainerBase):
         self.data_loader = data_loader
         self._data_loader_iter = iter(data_loader)
         self.optimizer = optimizer
+        self.my_center_loss = my_center_loss
+        self.my_center_loss_optimizer = my_center_loss_optimizer
 
     def run_step(self):
         """
@@ -270,18 +272,36 @@ class SimpleTrainer(TrainerBase):
         """
         If you want to do something with the losses, you can wrap the model.
         """
-        loss_dict = self.model(data)
+        # y = f(x)
+        # y输出，就是loss。x就是data
+        # y用于指导梯度下降。
+        # model的输出需要根据情况具体判断，可不是你认为输出是啥就是输出啥。
+        loss_dict = self.model(data, self.my_center_loss)
         if isinstance(loss_dict, torch.Tensor):
             losses = loss_dict
             loss_dict = {"total_loss": loss_dict}
         else:
+            # 实际上走到了这个分支
+            # class loss要updata
+            loss_cls = loss_dict['loss_cls']
+            new_loss_cls = loss_cls + loss_dict['loss_center'] * 0.1  # 1 这里其实是一个alpha参数 # 设置了0.2后，跑了一段时间开始报错
+            loss_dict.update({'loss_cls': new_loss_cls})
+
+            # center_loss = losses['loss_center']
+            # 删除 loss_center，避免后续求导的时候对原来的losses造成干扰。
+            del loss_dict['loss_center']
             losses = sum(loss_dict.values())
 
         """
         If you need to accumulate gradients or do something similar, you can
         wrap the optimizer with your custom `zero_grad()` method.
         """
+        print('train loops  = ', repr(losses))
+
+        # my_center_loss_optimizer
+        self.my_center_loss_optimizer.zero_grad()
         self.optimizer.zero_grad()
+        # losses虽然是一个dict，但是是记录了loss的计算流程的，因此backward的目的就是直接反向求导。
         losses.backward()
 
         self._write_metrics(loss_dict, data_time)
@@ -291,7 +311,12 @@ class SimpleTrainer(TrainerBase):
         wrap the optimizer with your custom `step()` method. But it is
         suboptimal as explained in https://arxiv.org/abs/2006.15704 Sec 3.2.4
         """
+        # 更新权重
+        # 训练中调整模型
+        for param in self.my_center_loss.parameters():
+            param.grad.data *= (1. / 0.1)
         self.optimizer.step()
+        self.my_center_loss_optimizer.step()
 
     def _write_metrics(
         self,
@@ -392,13 +417,13 @@ class AMPTrainer(SimpleTrainer):
         data_time = time.perf_counter() - start
 
         with autocast():
-            loss_dict = self.model(data)
+            loss_dict = self.model(data)  # 这里就是在训练了
             if isinstance(loss_dict, torch.Tensor):
                 losses = loss_dict
                 loss_dict = {"total_loss": loss_dict}
             else:
                 losses = sum(loss_dict.values())
-
+        # 更新loss
         self.optimizer.zero_grad()
         self.grad_scaler.scale(losses).backward()
 

@@ -155,6 +155,7 @@ def inference_on_dataset(
                 total_eval_time = 0
 
             start_compute_time = time.perf_counter()
+            # model inputs: 原始图像； 输出是处理后的图像。
             outputs = model(inputs)
             if torch.cuda.is_available():
                 torch.cuda.synchronize()

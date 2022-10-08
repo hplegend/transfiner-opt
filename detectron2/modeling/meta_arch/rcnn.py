@@ -16,9 +16,23 @@ from ..postprocessing import detector_postprocess
 from ..proposal_generator import build_proposal_generator
 from ..roi_heads import build_roi_heads
 from .build import META_ARCH_REGISTRY
+from PIL import Image
+import matplotlib.pyplot as plt
+import scipy.misc
+from torchvision import models, transforms
+from detectron2.layers import (
+    CNNBlockBase,
+    Conv2d,
+    DeformConv,
+    ModulatedDeformConv,
+    ShapeSpec,
+    get_norm,
+)
 
 __all__ = ["GeneralizedRCNN", "ProposalNetwork"]
 
+# mask rcnn的通用框架
+# 你所看到的mask rcnn的整体执行代码都在这里了。
 
 @META_ARCH_REGISTRY.register()
 class GeneralizedRCNN(nn.Module):
@@ -119,7 +133,9 @@ class GeneralizedRCNN(nn.Module):
             storage.put_image(vis_name, vis_img)
             break  # only visualize one image in a batch
 
-    def forward(self, batched_inputs: List[Dict[str, torch.Tensor]]):
+    # 定义了rcnn的主要流程
+    # 这里你所看到的就是在train函数中的model(data)的执行输出。输出是dict，loss.update实际上是triple的更新。
+    def forward(self, batched_inputs: List[Dict[str, torch.Tensor]], my_center_loss_fun=None):
         """
         Args:
             batched_inputs: a list, batched outputs of :class:`DatasetMapper` .
@@ -151,9 +167,80 @@ class GeneralizedRCNN(nn.Module):
         else:
             gt_instances = None
 
+        #
+        # print('images size ' + str(len(images)))
+
+        # backbone
+        # back bone出来的结果就是特征图。 backbone是FPN架构
+        # 如果要可视化特征图，直接看这里就好了。
+        # 这里要把所有的image训练完成后，才能输出特征
+        # notice： 这里的feature 是 [n,m,w,h]格式， n是batch图片数量，也就是输入的图片数量。 m通常就是256，输出通道。 w，h就是多尺度图像。
         features = self.backbone(images.tensor)
         # print('features keys:', features.keys())
+        # print('features p2.shape:', features['p2'].shape)
+        # print('features p3.shape:', features['p3'].shape)
+        # print('features p4.shape:', features['p4'].shape)
+        # print('features p5.shape:', features['p5'].shape)
+        # print('features p6.shape:', features['p6'].shape)
 
+        # 256个输出通道？ 能不能卷积一下。 1*1卷积。
+        # 1*1 卷积，融合256个输出通道
+        # my_conv1 = Conv2d(
+        #     256,
+        #     1,
+        #     kernel_size=1,
+        #     stride=1,
+        #     bias=False
+        # )
+        # features_6_out = my_conv1(features['p2'].cpu().detach())
+        # print('features_6_out shape', features_6_out.shape)
+        #
+
+        # 融合？
+        # 输出这么个通道怎么处理呢？ why？
+        # feature_map = features['p6'][1].squeeze(0).cpu() # 压缩成torch.Size([64, 55, 55])
+        #
+        # # 以下4行，通过双线性插值的方式改变保存图像的大小
+        # feature_map = feature_map.view(1, feature_map.shape[0], feature_map.shape[1],
+        #                                feature_map.shape[2])  # (1,64,55,55)
+        # upsample = torch.nn.UpsamplingBilinear2d(size=(28, 28))  # 这里进行调整大小
+        # feature_map = upsample(feature_map)
+        # feature_map = feature_map.view(feature_map.shape[1], feature_map.shape[2], feature_map.shape[3])
+        #
+        # feature_map_num = feature_map.shape[0]  # 返回通道数
+        # row_num = np.ceil(np.sqrt(feature_map_num))  # 8
+        #
+        # for index in range(1, feature_map_num + 1):  # 通过遍历的方式，将64个通道的tensor拿出
+        #     plt.figure()
+        #     # plt.imshow(feature_map[index - 1].detach(), cmap='rgb')  # feature_map[0].shape=torch.Size([55, 55])
+        #     # 将上行代码替换成，可显示彩色
+        #     plt.imshow(transforms.ToPILImage()(feature_map[index - 1].detach()))  # feature_map[0].shape=torch.Size([55, 55])
+        #     plt.axis('off')
+        #     plt.savefig('/content/drive/My Drive/Colab Notebooks/feature_map_save/' + str(index) + ".png")
+
+        # 一下代码先注释
+        # feature_map = features_6_out[0]  # 压缩成torch.Size([64, 55, 55])
+        #
+        # # 以下4行，通过双线性插值的方式改变保存图像的大小
+        # feature_map = feature_map.view(1, feature_map.shape[0], feature_map.shape[1],
+        #                                feature_map.shape[2])  # (1,64,55,55)
+        # upsample = torch.nn.UpsamplingBilinear2d(size=(184, 184))  # 这里进行调整大小
+        # feature_map = upsample(feature_map)
+        # feature_map = feature_map.view(feature_map.shape[1], feature_map.shape[2], feature_map.shape[3])
+        #
+        # feature_map_num = feature_map.shape[0]  # 返回通道数
+        # row_num = np.ceil(np.sqrt(feature_map_num))  # 8
+        #
+        # for index in range(1, feature_map_num + 1):  # 通过遍历的方式，将64个通道的tensor拿出
+        #     plt.figure()
+        #     # plt.imshow(feature_map[index - 1].detach(), cmap='rgb')  # feature_map[0].shape=torch.Size([55, 55])
+        #     # 将上行代码替换成，可显示彩色
+        #     plt.imshow(
+        #         transforms.ToPILImage()(feature_map[index - 1]))  # feature_map[0].shape=torch.Size([55, 55])
+        #     plt.axis('off')
+        #     plt.savefig('/content/drive/My Drive/Colab Notebooks/feature_map_save/' + str(index) + ".png")
+
+        # module2： RPN
         if self.proposal_generator is not None:
             proposals, proposal_losses = self.proposal_generator(images, features, gt_instances)
         else:
@@ -161,11 +248,15 @@ class GeneralizedRCNN(nn.Module):
             proposals = [x["proposals"].to(self.device) for x in batched_inputs]
             proposal_losses = {}
 
-        _, detector_losses = self.roi_heads(images, features, proposals, gt_instances)
+        # 参数：特征图，
+        _, detector_losses = self.roi_heads(images, features, proposals, gt_instances, my_center_loss_fun)
         if self.vis_period > 0:
             storage = get_event_storage()
             if storage.iter % self.vis_period == 0:
                 self.visualize_training(batched_inputs, proposals)
+
+        # center loss ??
+        # print('detector_losses losses', repr(detector_losses))
 
         losses = {}
         losses.update(detector_losses)
@@ -199,6 +290,37 @@ class GeneralizedRCNN(nn.Module):
 
         images = self.preprocess_image(batched_inputs)
         features = self.backbone(images.tensor)
+
+        # my_conv1 = Conv2d(
+        #     256,
+        #     1,
+        #     kernel_size=1,
+        #     stride=1,
+        #     bias=False
+        # )
+        # features_6_out = my_conv1(features['p3'].cpu().detach())
+        # print('features_6_out shape', features_6_out.shape)
+        #
+        # feature_map = features_6_out[0]  # 压缩成torch.Size([64, 55, 55])
+        #
+        # # 以下4行，通过双线性插值的方式改变保存图像的大小
+        # feature_map = feature_map.view(1, feature_map.shape[0], feature_map.shape[1],
+        #                                feature_map.shape[2])  # (1,64,55,55)
+        # # upsample = torch.nn.UpsamplingBilinear2d(size=(200, 200))  # 这里进行调整大小
+        # # feature_map = upsample(feature_map)
+        # feature_map = feature_map.view(feature_map.shape[1], feature_map.shape[2], feature_map.shape[3])
+        #
+        # feature_map_num = feature_map.shape[0]  # 返回通道数
+        # row_num = np.ceil(np.sqrt(feature_map_num))  # 8
+        #
+        # for index in range(1, feature_map_num + 1):  # 通过遍历的方式，将64个通道的tensor拿出
+        #     plt.figure()
+        #     # plt.imshow(feature_map[index - 1].detach(), cmap='rgb')  # feature_map[0].shape=torch.Size([55, 55])
+        #     # 将上行代码替换成，可显示彩色
+        #     plt.imshow(
+        #         transforms.ToPILImage()(feature_map[index - 1]))  # feature_map[0].shape=torch.Size([55, 55])
+        #     plt.axis('off')
+        #     plt.savefig('/content/drive/My Drive/Colab Notebooks/feature_map_save/' + str(index) + ".png")
 
         if detected_instances is None:
             if self.proposal_generator is not None:
@@ -242,6 +364,31 @@ class GeneralizedRCNN(nn.Module):
             r = detector_postprocess(results_per_image, height, width)
             processed_results.append({"instances": r})
         return processed_results
+
+
+    def show_feature_map(self, feature_map):
+        # feature_map=torch.Size([1, 64, 55, 55]),feature_map[0].shape=torch.Size([64, 55, 55])
+        # feature_map[2].shape     out of bounds
+
+        feature_map = feature_map.squeeze(0)  # 压缩成torch.Size([64, 55, 55])
+
+        # 以下4行，通过双线性插值的方式改变保存图像的大小
+        feature_map = feature_map.view(1, feature_map.shape[0], feature_map.shape[1],
+                                       feature_map.shape[2])  # (1,64,55,55)
+        upsample = torch.nn.UpsamplingBilinear2d(size=(256, 256))  # 这里进行调整大小
+        feature_map = upsample(feature_map)
+        feature_map = feature_map.view(feature_map.shape[1], feature_map.shape[2], feature_map.shape[3])
+
+        feature_map_num = feature_map.shape[0]  # 返回通道数
+        row_num = np.ceil(np.sqrt(feature_map_num))  # 8
+        plt.figure()
+        for index in range(1, feature_map_num + 1):  # 通过遍历的方式，将64个通道的tensor拿出
+            plt.subplot(row_num, row_num, index)
+            plt.imshow(feature_map[index - 1], cmap='gray')  # feature_map[0].shape=torch.Size([55, 55])
+            # 将上行代码替换成，可显示彩色 plt.imshow(transforms.ToPILImage()(feature_map[index - 1]))#feature_map[0].shape=torch.Size([55, 55])
+            plt.axis('off')
+            scipy.misc.imsave('feature_map_save//' + str(index) + ".png", feature_map[index - 1])
+        plt.show()
 
 
 @META_ARCH_REGISTRY.register()
